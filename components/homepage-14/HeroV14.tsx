@@ -21,7 +21,7 @@ const HeroV14 = () => {
         />
         Your browser does not support the video tag.
       </video>
-      <RevealWrapper className="container absolute left-1/3 top-2/3 -translate-x-1/3 -translate-y-2/3 lg:top-1/2 lg:-translate-y-1/2">
+      {/* <RevealWrapper className="container absolute left-1/3 top-2/3 -translate-x-1/3 -translate-y-2/3 lg:top-1/2 lg:-translate-y-1/2">
         <h1 className="mb-3 text-backgroundBody max-md:leading-none">
           Crafting <br className="hidden md:block" />
           unforgettable
@@ -33,20 +33,20 @@ const HeroV14 = () => {
           From award-winning films to high-end commercials, Rivor blends artistry and technology to bring your vision to
           life.
         </p>
-        {/* Primary CTA Button */}
-        <ul className="mt-7 flex list-none justify-start lg:mt-14">
-          <li className="block w-full text-center md:inline-block md:w-auto">
-            <Link href="/design-agency" className="rv-button rv-button-primary block md:inline-block">
-              <div className="rv-button-top">
-                <span>Explore Our Work</span>
-              </div>
-              <div className="rv-button-bottom">
-                <span className="text-nowrap">Explore Our Work</span>
-              </div>
-            </Link>
-          </li>
-        </ul>
+      </RevealWrapper> */}
+
+      <RevealWrapper className="absolute left-1/2 bottom-[0%] -translate-x-1/2 w-full px-4 md:px-6 lg:px-8">
+        <RevealWrapper>
+          <h1 className="cormorant-sc text-[rgb(237,233,228)] text-[30px] md:text-[35px] lg:text-[40px] leading-[0.8] text-center whitespace-nowrap tracking-[0.5px] mb-8 lg:mb-10">
+            The Architecture of<br />
+            Infinite Silence
+          </h1>
+        </RevealWrapper>
+        <h1 className="instrument-serif-regular text-[rgb(237,233,228)] text-[20vw] xl:text-[20vw] leading-[0.8] text-center whitespace-nowrap">
+          BINARYHUBB
+        </h1>
       </RevealWrapper>
+      
     </section>
   )
 }
