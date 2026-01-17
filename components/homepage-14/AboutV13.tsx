@@ -1,11 +1,60 @@
+'use client'
+
 import Link from 'next/link'
 import RevealWrapper from '../animation/RevealWrapper'
 import TextAppearAnimation from '../animation/TextAppearAnimation'
 import HeroGradientAnimation from '../shared/HeroGradientAnimation'
+import { useGSAP } from '@gsap/react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useRef } from 'react'
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger)
+}
 
 const AboutV13 = () => {
+  const aboutRef = useRef<HTMLElement>(null)
+
+  useGSAP(
+    () => {
+      if (!aboutRef.current) return
+
+      // Only apply overlap animation on larger screens (mobile should show hero fully first)
+      const isMobile = window.innerWidth < 768
+
+      if (isMobile) return
+
+      // Create overlapping parallax effect - section slides up over hero as you scroll
+      const overlap = gsap.fromTo(
+        aboutRef.current,
+        {
+          y: 150, // Start positioned lower
+        },
+        {
+          y: 0, // Move to final position
+          ease: 'none',
+          scrollTrigger: {
+            trigger: aboutRef.current,
+            start: 'top bottom',
+            end: 'top center',
+            scrub: true,
+          },
+        },
+      )
+
+      return () => {
+        overlap.kill()
+      }
+    },
+    { scope: aboutRef },
+  )
+
   return (
-    <section className="relative pb-14 pt-28 md:pb-16 md:pt-32 lg:pb-[88px] lg:pt-44 xl:pb-[100px] xl:pt-[200px]">
+    <section
+      ref={aboutRef}
+      className="relative mt-0 md:-mt-[10vh] lg:-mt-[15vh] pb-14 pt-28 md:pb-16 md:pt-32 lg:pb-[88px] lg:pt-44 xl:pb-[100px] xl:pt-[200px] z-10"
+      style={{ backgroundColor: 'rgb(237, 233, 228)' }}>
       <HeroGradientAnimation />
       <div className="container">
         <div className="text-center">

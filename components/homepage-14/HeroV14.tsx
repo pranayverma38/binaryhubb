@@ -1,10 +1,61 @@
+'use client'
+
 import Link from 'next/link'
 import RevealWrapper from '../animation/RevealWrapper'
+import { useGSAP } from '@gsap/react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useRef } from 'react'
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger)
+}
 
 const HeroV14 = () => {
+  const heroRef = useRef<HTMLElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  useGSAP(
+    () => {
+      if (!heroRef.current || !videoRef.current) return
+
+      // Create parallax effect on the video - moves slower than scroll (creates depth)
+      const parallax = gsap.fromTo(
+        videoRef.current,
+        {
+          y: 0,
+          force3D: true, // Enable GPU acceleration for smoother animation
+        },
+        {
+          y: '-50%', // Move video up faster relative to scroll, creating more pronounced parallax effect
+          ease: 'none',
+          force3D: true, // Keep GPU acceleration enabled
+          scrollTrigger: {
+            trigger: heroRef.current,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 1, // Smooth scrubbing (numeric value prevents stuttering)
+            invalidateOnRefresh: true, // Recalculate on resize
+          },
+        },
+      )
+
+      return () => {
+        parallax.kill()
+      }
+    },
+    { scope: heroRef },
+  )
+
   return (
-    <section className="relative h-[80vh] w-screen overflow-hidden lg:h-screen">
-      <video className="absolute left-0 top-0 z-[-1] h-full w-full object-cover" autoPlay loop muted>
+    <section ref={heroRef} className="relative min-h-[80vh] h-[80vh] w-screen overflow-hidden lg:h-screen">
+      <video
+        ref={videoRef}
+        className="absolute left-0 top-0 z-[-1] h-[120%] w-full object-cover"
+        style={{ willChange: 'transform' }}
+        autoPlay
+        loop
+        muted>
         <source src="/video/promo.mp4" type="video/mp4" />
         <track src="subtitles/lawyer-hero-video-en.vtt" kind="subtitles" srcLang="en" label="English" />
         <track
