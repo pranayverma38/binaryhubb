@@ -1,6 +1,6 @@
 import CursorPointer from '@/components/animation/CursorPointer'
 import SmoothScrollProvider from '@/components/shared/SmoothScroll'
-import ThemeSwitcher from '@/components/theme/ThemeSwitcher'
+// import ThemeSwitcher from '@/components/theme/ThemeSwitcher'
 import { satoshi } from '@/utils/fonts'
 import { ThemeModeProvider } from '@/utils/Providers'
 import type { Metadata } from 'next'
@@ -22,7 +22,7 @@ export default function RootLayout({
         <Suspense fallback={<div>Loading...</div>}>
           <SmoothScrollProvider>
             <ThemeModeProvider>
-              <ThemeSwitcher />
+              {/* <ThemeSwitcher /> */}
               <CursorPointer />
               {children}
             </ThemeModeProvider>

@@ -15,7 +15,7 @@ export const metadata = {
 
 const homepage14 = () => {
   return (
-    <LayoutTwo>
+    <LayoutTwo mainStyle={{ backgroundColor: 'rgb(237, 233, 228)' }}>
       <HeroV14 />
       <AboutV13 />
       <ServicesV13 />
