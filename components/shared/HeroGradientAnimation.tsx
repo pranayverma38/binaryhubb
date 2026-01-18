@@ -35,7 +35,7 @@ const HeroGradientAnimation = ({ scale = false }: PropsType) => {
 
         const bgAnimation = gsap.to(bg, {
           repeat: -1,
-          duration: 3,
+          duration: 8,
           rotation: 360,
           ease: Linear.easeNone,
         })
@@ -51,7 +51,7 @@ const HeroGradientAnimation = ({ scale = false }: PropsType) => {
 
   if (!isClient) {
     return (
-      <div className="absolute left-0 top-0 -z-10 h-full w-full blur-[50px]">
+      <div className="absolute left-0 top-0 -z-10 h-full w-full blur-[30px] opacity-40">
         <Image
           src={heroGradient}
           alt="hero-gradient-background"
@@ -66,7 +66,8 @@ const HeroGradientAnimation = ({ scale = false }: PropsType) => {
   return (
     <div
       ref={wrapperRef}
-      className={`absolute left-0 top-0 -z-10 h-full w-full blur-[50px] ${scale ? 'scale-75' : 'scale-100'}`}>
+      // className={`absolute left-0 top-0 -z-10 h-full w-full blur-[50px] ${scale ? 'scale-75' : 'scale-100'}`}>
+      className={`absolute left-0 top-0 -z-10 h-full w-full blur-[90px] opacity-60 ${scale ? 'scale-75' : 'scale-100'}`}>
       <Image
         src={heroGradient}
         alt="hero-gradient-background"

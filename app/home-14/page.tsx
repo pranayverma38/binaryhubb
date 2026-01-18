@@ -7,7 +7,7 @@ import TestimonialV9 from '@/components/homepage-14/TestimonialV9'
 import WhyChooseUsV3 from '@/components/homepage-14/WhyChooseUsV3'
 import CTA from '@/components/shared/CTA'
 import CtaImageSlider from '@/components/shared/CtaImageSlider'
-import LayoutTwo from '@/components/shared/LayoutTwo'
+import LayoutOne from '@/components/shared/LayoutOne'
 
 export const metadata = {
   title: 'Film Production Agency  - Rivor',
@@ -15,14 +15,14 @@ export const metadata = {
 
 const homepage14 = () => {
   return (
-    <LayoutTwo mainStyle={{ backgroundColor: 'rgb(237, 233, 228)' }}>
+    <LayoutOne mainStyle={{ backgroundColor: 'rgb(237, 233, 228)' }}>
       <HeroV14 />
       <AboutV13 />
-      <ServicesV13 />
+      {/* <ServicesV13 />
       <OurWorkShowcase />
       <WhyChooseUsV3 />
       <AwardWinningWork />
-      <TestimonialV9 />
+      <TestimonialV9 /> */}
       <CTA headingClass="xl:text-[88px]" buttonText="Start Your Film Project">
         Let’s Create
         <CtaImageSlider
@@ -35,7 +35,7 @@ const homepage14 = () => {
         Something
         <span className="block font-instrument italic max-md:inline-block sm:mt-10">Extraordinary</span>
       </CTA>
-    </LayoutTwo>
+    </LayoutOne>
   )
 }
 

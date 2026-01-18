@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { Libre_Baskerville } from 'next/font/google'
 import RevealWrapper from '../animation/RevealWrapper'
 import TextAppearAnimation from '../animation/TextAppearAnimation'
 import HeroGradientAnimation from '../shared/HeroGradientAnimation'
@@ -8,6 +9,12 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useRef } from 'react'
+
+const libreBaskerville = Libre_Baskerville({
+  weight: ['400', '700'],
+  subsets: ['latin'],
+  display: 'swap',
+})
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger)
@@ -58,22 +65,26 @@ const AboutV13 = () => {
       <HeroGradientAnimation />
       <div className="container">
         <div className="text-center">
-          <RevealWrapper className="rv-badge mb-3">
+          {/* <RevealWrapper className="rv-badge mb-3">
             <span className="rv-badge-text">About</span>
-          </RevealWrapper>
+          </RevealWrapper> */}
           <TextAppearAnimation>
-            <h2 className="text-appear mb-6">Pioneering creativity in film &amp; Media</h2>
+            <h2 className="instrument-serif-regular mb-6">
+              <span className="text-[34px] md:text-[43px] lg:text-[50px] xl:text-[60px]">World's First</span>
+              <br />
+              <span className="text-[48px] md:text-[57px] lg:text-[64px] xl:text-[74px]">Maison of <span className="italic maroon-text">Relationship Architecture</span></span>
+            </h2>
           </TextAppearAnimation>
-          <RevealWrapper as="h5">
+          {/* <RevealWrapper as="h5">
             Rivor is a leading film production agency dedicated to crafting powerful visual narratives. With a team of
             visionary filmmakers, cinematographers, and VFX artists, we deliver world-class productions across feature
             films, commercials, documentaries, and branded content.
+          </RevealWrapper> */}
+          <RevealWrapper className={`mx-auto mt-3 max-w-3xl ${libreBaskerville.className} italic text-[#403e39]`}>
+          We do not craft objects to be worn, we craft the infrastructure of the uninterrupted
+          life. While the world builds for the moment, we build for the Era.
           </RevealWrapper>
-          <RevealWrapper as="p" className="mx-auto mt-3 max-w-3xl">
-            Our mission is simple: to create breathtaking cinematic experiences that captivate audiences and leave a
-            lasting impact.
-          </RevealWrapper>
-          <RevealWrapper as="ul" className="mt-7 justify-self-center max-md:w-full md:mt-14">
+          {/* <RevealWrapper as="ul" className="mt-7 justify-self-center max-md:w-full md:mt-14">
             <li className="mx-auto block w-full text-center md:inline-block md:w-auto">
               <Link href="/team" className="rv-button rv-button-white block md:inline-block">
                 <div className="rv-button-top">
@@ -84,7 +95,7 @@ const AboutV13 = () => {
                 </div>
               </Link>
             </li>
-          </RevealWrapper>
+          </RevealWrapper> */}
         </div>
       </div>
     </section>

@@ -124,6 +124,12 @@ html.lenis {
   }
 }
 
+// Force maroon color for Relationship Architecture
+.maroon-text,
+.maroon-text .word {
+  color: #803300 !important;
+}
+
 // Accordion Components
 // ------------------
 .accordion-header-icon {
@@ -636,10 +642,7 @@ html.lenis {
 
 // Footer Gradient text
 .footer-text {
-  background: -webkit-radial-gradient(#fff, #101010);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: rgb(189, 180, 175);
 }
 
 .footer-text-v2 {

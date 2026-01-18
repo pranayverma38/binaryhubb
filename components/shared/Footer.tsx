@@ -4,14 +4,16 @@ import logo from '@/public/images/logo.svg'
 import Image from 'next/image'
 import Link from 'next/link'
 import FooterProvider from './FooterProvider'
+import logoPng from '@/public/images/logo-icon.png'
 
 const Footer = () => {
   return (
     <FooterProvider>
       <div className="container">
         <div className="relative z-10 flex flex-col flex-wrap justify-center gap-y-10 sm:flex-row sm:justify-between sm:gap-y-16">
-          <div className="pr-8 max-lg:basis-full">
-            <h5 className="mb-4 font-satoshi text-sm font-bold uppercase tracking-[3px] text-white sm:mb-8">
+          <div className="pr-8 max-lg:basis-full flex justify-start lg:justify-center items-start">
+            <Image src={logoPng} alt="logo" className="h-auto w-[90px] lg:w-[150px]" />
+            {/* <h5 className="mb-4 font-satoshi text-sm font-bold uppercase tracking-[3px] text-white sm:mb-8">
               Reach Us
             </h5>
             <p className="mb-5 text-sm text-white">
@@ -38,7 +40,7 @@ const Footer = () => {
                   />
                 </figure>
               </Link>
-            </div>
+            </div> */}
           </div>
 
           {footerData.map((section, index) => (
@@ -63,8 +65,8 @@ const Footer = () => {
       </div>
 
       <div className="absolute bottom-0 w-full">
-        <h5 className="footer-text xs:text-5xl absolute bottom-0 left-1/2 w-full -translate-x-1/2 translate-y-[30%] text-nowrap text-center font-satoshi text-4xl font-medium tracking-widest sm:text-6xl md:text-[88px] lg:text-[120px] xl:text-[150px] 2xl:text-[170px]">
-          RIVOR AGENCY
+        <h5 className="footer-text xs:text-6xl absolute bottom-0 left-1/2 w-full -translate-x-1/2 translate-y-[30%] text-nowrap text-center instrument-serif-regular text-5xl font-medium tracking-widest sm:text-7xl md:text-[110px] lg:text-[150px] xl:text-[180px] 2xl:text-[200px]">
+          BINARYHUBB
         </h5>
       </div>
     </FooterProvider>

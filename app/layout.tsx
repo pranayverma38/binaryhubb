@@ -8,7 +8,17 @@ import { ReactNode, Suspense } from 'react'
 import '../scss/main.scss'
 
 export const metadata: Metadata = {
-  title: 'Rivor Template',
+  title: 'Binaryhubb',
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/icon.png', type: 'image/png', sizes: '96x96' },
+    ],
+    apple: [
+      { url: '/icon.png', sizes: '96x96', type: 'image/png' },
+    ],
+  },
 }
 
 export default function RootLayout({
