@@ -1,3 +1,4 @@
+import TravelImagesGallery from '@/components/homepage-13/TravelImagesGallery'
 import AboutV13 from '@/components/homepage-14/AboutV13'
 import AwardWinningWork from '@/components/homepage-14/AwardWinningWork'
 import HeroV14 from '@/components/homepage-14/HeroV14'
@@ -23,6 +24,7 @@ const homepage14 = () => {
       <WhyChooseUsV3 />
       <AwardWinningWork />
       <TestimonialV9 /> */}
+      <TravelImagesGallery />
       <CTA headingClass="xl:text-[88px]" buttonText="Start Your Film Project">
         Let’s Create
         <CtaImageSlider
