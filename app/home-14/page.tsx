@@ -9,6 +9,7 @@ import WhyChooseUsV3 from '@/components/homepage-14/WhyChooseUsV3'
 import CTA from '@/components/shared/CTA'
 import CtaImageSlider from '@/components/shared/CtaImageSlider'
 import LayoutOne from '@/components/shared/LayoutOne'
+import AboutV4 from '@/components/homepage-04/AboutV4'
 
 export const metadata = {
   title: 'Film Production Agency  - Rivor',
@@ -25,6 +26,7 @@ const homepage14 = () => {
       <AwardWinningWork />
       <TestimonialV9 /> */}
       <TravelImagesGallery />
+      <AboutV4 />
       <CTA headingClass="xl:text-[88px]" buttonText="Start Your Film Project">
         Let’s Create
         <CtaImageSlider

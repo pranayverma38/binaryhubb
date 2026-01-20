@@ -812,3 +812,54 @@ html.lenis {
     @apply md:w-[450px] lg:w-[770px];
   }
 }
+
+// Gallery Hover Effects
+.gallery-hover-container {
+  transition: all 0.3s ease;
+}
+
+/* When any gallery item is hovered */
+.gallery-hover-container:has(.gallery-item:hover) .gallery-item:hover img {
+  transform: scale(1.05) !important;
+  filter: grayscale(0%) !important;
+}
+
+.gallery-hover-container:has(.gallery-item:hover) .gallery-item:not(:hover) img {
+  filter: grayscale(100%) !important;
+}
+
+.gallery-hover-container:has(.gallery-item:hover) .gallery-item-group .gallery-item-inner img {
+  filter: grayscale(100%) !important;
+}
+
+/* When gallery item group is hovered - make both inner images pop */
+.gallery-item-group:hover .gallery-item-inner img {
+  transform: scale(1.05) !important;
+  filter: grayscale(0%) !important;
+}
+
+.gallery-hover-container:has(.gallery-item-group:hover) .gallery-item img {
+  filter: grayscale(100%) !important;
+}
+
+/* When inner item is hovered - override group hover for the non-hovered inner item */
+.gallery-item-inner:hover img {
+  transform: scale(1.05) !important;
+  filter: grayscale(0%) !important;
+}
+
+/* CRITICAL: When one inner item is hovered, make the OTHER inner item grayscale - must come after group hover */
+.gallery-hover-container:has(.gallery-item-inner:hover) .gallery-item-group:has(.gallery-item-inner:hover) .gallery-item-inner:not(:hover) img {
+  filter: grayscale(100%) !important;
+  transform: scale(1) !important;
+}
+
+/* When any inner item is hovered, make all other gallery items grayscale */
+.gallery-hover-container:has(.gallery-item-inner:hover) .gallery-item img {
+  filter: grayscale(100%) !important;
+}
+
+/* SVG Brown Color - converts SVG to #803300 */
+.svg-brown-color {
+  filter: brightness(0) saturate(100%) invert(18%) sepia(98%) saturate(2000%) hue-rotate(5deg) brightness(0.5) contrast(1.1);
+}
