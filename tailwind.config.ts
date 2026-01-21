@@ -72,9 +72,28 @@ export default {
             opacity: '0.95',
           },
         },
+        'dots-wave': {
+          '0%': {
+            transform: 'translateY(14px) scale(0.75)',
+            opacity: '0.15',
+          },
+          '40%': {
+            transform: 'translateY(-10px) scale(1.12)',
+            opacity: '1',
+          },
+          '80%': {
+            transform: 'translateY(4px) scale(0.98)',
+            opacity: '0.85',
+          },
+          '100%': {
+            transform: 'translateY(0) scale(1)',
+            opacity: '0.95',
+          },
+        },
       },
       animation: {
         'dots-breathe': 'dots-breathe 4s ease-in-out infinite',
+        'dots-wave': 'dots-wave 0.9s ease-out forwards',
       },
     },
   },
