@@ -51,7 +51,7 @@ const ProcessV2 = () => {
   }, [])
 
   return (
-    <section className="relative overflow-hidden pb-14 pt-14 md:pb-16 md:pt-16 lg:pb-[88px] lg:pt-[88px] xl:pb-[100px] xl:pt-[100px]">
+    <section className="relative overflow-hidden pb-[140px] pt-[100px] md:pb-20 md:pt-20 lg:pb-[110px] lg:pt-[110px] xl:pb-[170px] xl:pt-[120px]">
       <TextAppearAnimation>
         <h3 className="text-appear mb-8 text-center instrument-serif-regular text-[48px] md:text-[57px] lg:mb-[52px] lg:text-[64px] xl:text-[74px] xl:leading-[1.1]">
           The <span className="italic">Edition 1</span>

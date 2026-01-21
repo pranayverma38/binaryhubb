@@ -15,6 +15,7 @@ import AboutV4 from '@/components/homepage-04/AboutV4'
 import ImageMarque from '@/components/homepage-04/ImageMarque'
 import Video from '@/components/shared/Video'
 import ProcessV2 from '@/components/homepage-02/ProcessV2'
+import WaxCard from '@/components/homepage-14/WaxCard'
 
 export const metadata = {
   title: 'Film Production Agency  - Rivor',
@@ -47,6 +48,8 @@ const homepage14 = () => {
       </CTA> */}
       <ServicesV14 />
       <ProcessV2 />
+      <WaxCard />
+      
       {/* <ImmersiveImage imageSrc="/images/44.jpg" imageAlt="Immersive experience" /> */}
 
 
