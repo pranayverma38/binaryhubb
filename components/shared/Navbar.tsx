@@ -14,6 +14,9 @@ import { MenuList } from '../navbarCompo/menu-list'
 export default function Navbar() {
   const pathname = usePathname()
   const [hasScrolledPastHero, setHasScrolledPastHero] = useState(false)
+  const [isVisible, setIsVisible] = useState(true)
+  const [isMobile, setIsMobile] = useState(false)
+  const lastScrollY = useRef(0)
 
   const menuRef = useRef<HTMLElement>(null)
   const menuOverflowRef = useRef<HTMLDivElement>(null)
@@ -211,6 +214,20 @@ export default function Navbar() {
   }, [pathname, closeMenu])
 
   useEffect(() => {
+    // Check if mobile (less than md breakpoint - 768px)
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+
+    checkMobile()
+    window.addEventListener('resize', checkMobile, { passive: true })
+
+    return () => {
+      window.removeEventListener('resize', checkMobile)
+    }
+  }, [])
+
+  useEffect(() => {
     // Find the first section/component on the page
     const findFirstSection = () => {
       // Try to find the first section element or the first main content element
@@ -247,11 +264,33 @@ export default function Navbar() {
     }
   }, [pathname])
 
+  // Mobile scroll-based hiding
+  useEffect(() => {
+    if (!isMobile) {
+      setIsVisible(true)
+      return
+    }
+
+    const controlNavbar = () => {
+      if (window.scrollY > lastScrollY.current && window.scrollY > 200) {
+        // Scrolling down & past threshold
+        setIsVisible(false)
+      } else {
+        // Scrolling up
+        setIsVisible(true)
+      }
+      lastScrollY.current = window.scrollY
+    }
+
+    window.addEventListener('scroll', controlNavbar, { passive: true })
+    return () => window.removeEventListener('scroll', controlNavbar)
+  }, [isMobile])
+
   return (
     <>
-      <header ref={headerRef} className="fixed z-[9999] w-full">
+      <header ref={headerRef} className="fixed z-[9999] w-full transition-transform duration-300">
         <div
-          className="pointer-events-none fixed top-0 z-[21] h-[155px] w-full">
+          className={`pointer-events-none fixed top-0 z-[21] h-[155px] w-full transition duration-300 ease-linear will-change-transform ${isVisible || !isMobile ? 'translate-y-0' : '-translate-y-full'}`}>
           <div
             className="pointer-events-none absolute inset-0"
             style={{ backdropFilter: 'blur(0px)', WebkitBackdropFilter: 'blur(0px)' }}></div>
@@ -307,7 +346,7 @@ export default function Navbar() {
             }}></div>
         </div>
         <nav
-          className="fixed z-[1000] w-full px-5 pt-1 sm:px-8 sm:pt-5">
+          className={`fixed z-[1000] w-full px-5 pt-1 transition duration-300 ease-linear will-change-transform sm:px-8 sm:pt-5 ${isVisible || !isMobile ? 'translate-y-0' : '-translate-y-full'}`}>
           <div className="flex justify-between">
             <Link href="/" className="relative z-10 mt-2 sm:mt-4 md:mt-6">
               <Image
