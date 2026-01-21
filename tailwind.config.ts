@@ -53,6 +53,29 @@ export default {
         nav: '0px 0px 30px rgba(0, 0, 0, 0.05)',
         box: ' 0px 5px 50px 0px rgba(0, 0, 0, 0.07)',
       },
+      keyframes: {
+        'dots-breathe': {
+          '0%, 100%': {
+            transform: 'translateY(0) scale(1)',
+            opacity: '0.9',
+          },
+          '25%': {
+            transform: 'translateY(-3px) scale(1.07)',
+            opacity: '1',
+          },
+          '50%': {
+            transform: 'translateY(0) scale(0.96)',
+            opacity: '0.8',
+          },
+          '75%': {
+            transform: 'translateY(3px) scale(1.05)',
+            opacity: '0.95',
+          },
+        },
+      },
+      animation: {
+        'dots-breathe': 'dots-breathe 4s ease-in-out infinite',
+      },
     },
   },
   safelist: [

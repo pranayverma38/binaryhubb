@@ -65,7 +65,7 @@ const Footer = () => {
       </div>
 
       <div className="absolute bottom-0 w-full">
-        <h5 className="footer-text xs:text-6xl absolute bottom-0 left-1/2 w-full -translate-x-1/2 translate-y-[30%] text-nowrap text-center instrument-serif-regular text-5xl font-medium tracking-widest sm:text-7xl md:text-[110px] lg:text-[150px] xl:text-[180px] 2xl:text-[200px] opacity-40">
+        <h5 className="footer-text xs:text-6xl absolute bottom-0 left-1/2 w-full -translate-x-1/2 translate-y-[30%] text-nowrap text-center instrument-serif-regular text-5xl font-medium tracking-widest sm:text-7xl md:text-[110px] lg:text-[150px] xl:text-[180px] 2xl:text-[200px] opacity-15">
           BINARYHUBB
         </h5>
       </div>

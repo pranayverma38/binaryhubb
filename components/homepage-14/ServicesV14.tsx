@@ -15,44 +15,107 @@ const services = [
   {
     id: 1,
     number: '01',
-    title: 'Private Chef',
+    title: 'The Dated Decree',
     description:
-      'Core Elements, Guidelines We create engaging brand and campaign identities that resonate with your target audience, from logo design to complete brand experience.',
+      'A Burgundy-hued envelope….  It bears your Coordinate of Origin—the sacred marker of your union—signaling that this journey is yours alone.',
     image: '/images/22.jpg',
   },
   {
     id: 2,
     number: '02',
-    title: 'Boarding Assistance',
+    title: 'The Foundation Sequence',
     description:
-      'Begin and end your journey with ease. Our VIP airport service includes priority check-in, luggage handling, and a smooth, stress-free transfer to your hotel.',
+      'Three sequential blueprints—The Pause, The Shared Silence, and The Turning. Rendered on 380 GSM archival cardstock with shallow blind-debossing, they serve as the structural guide for your transition into presence.',
     image: '/images/44.jpg',
   },
   {
     id: 1,
-    number: '01',
-    title: 'Private Chef',
+    number: '03',
+    title: 'The Unspoken Echoes',
     description:
-      'Core Elements, Guidelines We create engaging brand and campaign identities that resonate with your target audience, from logo design to complete brand experience.',
+      'A co-created artifact on stippled fiber paper. This is a sanctuary for the unsaid; a space to hear things never heard and to open depths previously untouched, preserving the evolution of your bond in ink.',
     image: '/images/22.jpg',
   },
   {
     id: 3,
-    number: '03',
-    title: 'Personal Concierge',
+    number: '04',
+    title: 'The Visionary Seal',
     description:
-      'From securing reservations at Paris\'s finest restaurants to arranging exclusive cultural experiences, our dedicated concierge ensures your stay is effortlessly exceptional.',
+      'An Ivory vellum-sealed envelope, secured with a hand-poured Burgundy wax "Together" stamp. It contains the 80-Year Vision and a cinematic portal—a video reflection of your future selves—concluding with the Closing Covenant.',
+    image: '/images/55.jpg',
+  },
+  {
+    id: 3,
+    number: '05',
+    title: 'The Revelations',
+    description:
+      'Six heavy-duty 400 GSM cards featuring metallic Burgundy scratch-off ovals. To be unveiled slowly over time with the included Weighted Wood Stylus, these are hidden prompts designed to strip away the surface and reveal the core.',
+    image: '/images/55.jpg',
+  },
+  {
+    id: 3,
+    number: '06',
+    title: 'The Twenty Rituals',
+    description:
+      'A curated collection of architectural movements, nestled within a hand-sewn ivory cotton shroud. This simple muslin pouch protects the delicate rituals that bridge the gap between "living near" and "being with."',
+    image: '/images/55.jpg',
+  },
+  {
+    id: 3,
+    number: '07',
+    title: 'The Shared Horizons',
+    description:
+      'A 320 GSM leatherette chronicle with aged cream leaves. This is a living map of your collective intent, where shared dreams are inscribed and souvenirs are preserved, transforming your togetherness into a purposeful adventure.',
+    image: '/images/55.jpg',
+  },
+  {
+    id: 3,
+    number: '08',
+    title: 'The Olfactive Chamber',
+    description:
+      'A hidden porcelain disc infused with Silver Needle White Tea, ensuring the Archive emits a permanent scent of "Fresh Silence" upon every opening—a sensory anchor for your sanctuary.',
     image: '/images/55.jpg',
   },
 ]
 
 const ServicesV14 = () => {
   const sectionRef = useRef<HTMLElement>(null)
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([])
 
   useGSAP(
     () => {
       if (!sectionRef.current) return
-      // Additional scroll animations can be added here if needed
+
+      // Create parallax effect for each card
+      cardRefs.current.forEach((cardRef, index) => {
+        if (!cardRef) return
+
+        const imageContainer = cardRef.querySelector('.parallax-image-container') as HTMLElement
+        if (!imageContainer) return
+
+        // Different parallax speeds for each card (varied speeds for visual interest)
+        // Positive values move down on scroll, negative values move up on scroll
+        const parallaxSpeeds = [60, -50, 80, -60]
+        const parallaxDistance = parallaxSpeeds[index % parallaxSpeeds.length]
+
+        gsap.fromTo(
+          imageContainer,
+          {
+            y: -parallaxDistance / 2, // Start position (half distance up)
+          },
+          {
+            y: parallaxDistance / 2, // End position (half distance down)
+            ease: 'none',
+            scrollTrigger: {
+              trigger: cardRef,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 1, // Smooth scrubbing (1 = 1 second lag for smoothness)
+              invalidateOnRefresh: true,
+            },
+          },
+        )
+      })
     },
     { scope: sectionRef },
   )
@@ -69,10 +132,14 @@ const ServicesV14 = () => {
             </h3>
           </TextAppearAnimation>
         {services.map((service, index) => (
-          <div key={service.id}>
+          <div
+            key={`${service.id}-${index}`}
+            ref={(el) => {
+              cardRefs.current[index] = el
+            }}>
             <div className="grid grid-cols-1 gap-8 md:grid-cols-12 md:gap-8 lg:gap-12">
               {/* Left Column: Number and Title */}
-              <RevealWrapper className="md:col-span-2" delay={index * 0.6}>
+              <RevealWrapper className="md:col-span-2" delay={index * 0.3}>
                 <div className="flex flex-col">
                   <span className="mb-2 text-sm font-light tracking-wider text-[#403e39] md:mb-4">
                     {service.number}
@@ -84,22 +151,24 @@ const ServicesV14 = () => {
               </RevealWrapper>
 
               {/* Middle Column: Description */}
-              <RevealWrapper className="md:col-span-6" delay={index * 0.6 + 0.3}>
+              <RevealWrapper className="md:col-span-6" delay={index * 0.3 + 0.1}>
                 <p className="text-left text-[#403e39] text-base md:text-lg leading-relaxed max-w-2xl">
                   {service.description}
                 </p>
               </RevealWrapper>
 
               {/* Right Column: Image */}
-              <RevealWrapper className="md:col-span-4" delay={index * 0.6 + 0.6}>
+              <RevealWrapper className="md:col-span-4" delay={index * 0.3 + 0.3}>
                 <div className="relative h-[300px] w-full overflow-hidden md:h-[400px] lg:h-[220px] xl:h-[230px]">
-                  <Image
-                    src={service.image}
-                    alt={service.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 41.67vw"
-                  />
+                  <div className="parallax-image-container relative h-[120%] w-full -top-[10%]">
+                    <Image
+                      src={service.image}
+                      alt={service.title}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 41.67vw"
+                    />
+                  </div>
                 </div>
               </RevealWrapper>
             </div>
