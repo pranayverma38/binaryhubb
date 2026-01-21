@@ -114,6 +114,35 @@ const ProcessV2 = () => {
               ref={dotsGridRef}
               className="relative grid grid-cols-10 gap-6 lg:gap-7 justify-items-center"
               onMouseLeave={() => setHoverGroup(null)}>
+              {/* Tooltips */}
+              {/* Gold tooltip */}
+              <div
+                className={`pointer-events-none absolute left-1/2 top-0 -translate-x-1/2 -translate-y-full transition-all duration-500 ease-out ${
+                  hoverGroup === 'first'
+                    ? 'opacity-100 translate-y-0 scale-100'
+                    : 'opacity-0 -translate-y-4 scale-95 pointer-events-none'
+                }`}
+                style={{ marginTop: '-12px' }}>
+                <div className="rounded-md bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-400 p-[1px]">
+                  <div className="rounded-md bg-white px-4 py-2 text-sm font-medium text-black shadow-lg whitespace-nowrap">
+                    Awaiting the Inscription of Presence
+                  </div>
+                </div>
+              </div>
+              {/* Burgundy tooltip */}
+              <div
+                className={`pointer-events-none absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full transition-all duration-500 ease-out ${
+                  hoverGroup === 'last'
+                    ? 'opacity-100 translate-y-0 scale-100'
+                    : 'opacity-0 translate-y-4 scale-95 pointer-events-none'
+                }`}
+                style={{ marginBottom: '-12px' }}>
+                <div className="rounded-md bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-400 p-[1px]">
+                  <div className="rounded-md bg-white px-4 py-2 text-sm font-medium text-black shadow-lg whitespace-nowrap">
+                    Awaiting the Golden Heritage
+                  </div>
+                </div>
+              </div>
               {/* Hover zones to trigger group effects even between dots */}
               {/* First 35 dots - Gold: rows 1-3 (full) + first 5 columns of row 4 */}
               <div
