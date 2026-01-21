@@ -13,8 +13,7 @@ import { MenuList } from '../navbarCompo/menu-list'
 
 export default function Navbar() {
   const pathname = usePathname()
-  const [isVisible, setIsVisible] = useState(true)
-  const lastScrollY = useRef(0)
+  const [hasScrolledPastHero, setHasScrolledPastHero] = useState(false)
 
   const menuRef = useRef<HTMLElement>(null)
   const menuOverflowRef = useRef<HTMLDivElement>(null)
@@ -25,6 +24,7 @@ export default function Navbar() {
   const scrollPositionRef = useRef(0)
   const isMenuOpenRef = useRef(false)
   const headerRef = useRef<HTMLElement>(null)
+  const heroSectionRef = useRef<HTMLElement | null>(null)
 
   useLayoutEffect(() => {
     if (menuRef.current) {
@@ -211,26 +211,47 @@ export default function Navbar() {
   }, [pathname, closeMenu])
 
   useEffect(() => {
-    const controlNavbar = () => {
-      if (window.scrollY > lastScrollY.current && window.scrollY > 200) {
-        // Scrolling down & past threshold
-        setIsVisible(false)
-      } else {
-        // Scrolling up
-        setIsVisible(true)
+    // Find the first section/component on the page
+    const findFirstSection = () => {
+      // Try to find the first section element or the first main content element
+      const firstSection = document.querySelector('main section, section, [data-hero]')
+      if (firstSection) {
+        heroSectionRef.current = firstSection as HTMLElement
       }
-      lastScrollY.current = window.scrollY
     }
 
-    window.addEventListener('scroll', controlNavbar)
-    return () => window.removeEventListener('scroll', controlNavbar)
-  }, [])
+    findFirstSection()
+
+    const checkScrollPosition = () => {
+      if (heroSectionRef.current) {
+        const heroRect = heroSectionRef.current.getBoundingClientRect()
+        const heroBottom = heroRect.bottom
+        // If hero section has scrolled past the top of viewport
+        setHasScrolledPastHero(heroBottom <= 0)
+      } else {
+        // Fallback: use a threshold based on viewport height
+        const threshold = window.innerHeight * 0.8 // 80vh threshold
+        setHasScrolledPastHero(window.scrollY > threshold)
+      }
+    }
+
+    // Check on mount
+    checkScrollPosition()
+
+    window.addEventListener('scroll', checkScrollPosition, { passive: true })
+    window.addEventListener('resize', checkScrollPosition, { passive: true })
+
+    return () => {
+      window.removeEventListener('scroll', checkScrollPosition)
+      window.removeEventListener('resize', checkScrollPosition)
+    }
+  }, [pathname])
 
   return (
     <>
-      <header ref={headerRef} className="fixed z-[9999] w-full transition-transform duration-300">
+      <header ref={headerRef} className="fixed z-[9999] w-full">
         <div
-          className={`pointer-events-none fixed top-0 z-[21] h-[155px] w-full transition duration-300 ease-linear will-change-transform ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
+          className="pointer-events-none fixed top-0 z-[21] h-[155px] w-full">
           <div
             className="pointer-events-none absolute inset-0"
             style={{ backdropFilter: 'blur(0px)', WebkitBackdropFilter: 'blur(0px)' }}></div>
@@ -286,31 +307,37 @@ export default function Navbar() {
             }}></div>
         </div>
         <nav
-          className={`fixed z-[1000] w-full px-5 pt-1 transition duration-300 ease-linear will-change-transform sm:px-8 sm:pt-5 ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
+          className="fixed z-[1000] w-full px-5 pt-1 sm:px-8 sm:pt-5">
           <div className="flex justify-between">
             <Link href="/" className="relative z-10 mt-2 sm:mt-4 md:mt-6">
               <Image
-                className="inline-block max-h-[50px] w-auto sm:max-h-[60px] md:max-h-[80px] lg:max-h-[100px] xl:max-h-[120px] dark:hidden"
+                className="inline-block max-h-[50px] w-auto sm:max-h-[60px] md:max-h-[80px] lg:max-h-[100px] xl:max-h-[120px] dark:hidden transition-all duration-300"
                 src={logo}
                 alt="logo"
                 width={136}
                 height={68}
                 priority
+                style={{
+                  filter: hasScrolledPastHero ? 'brightness(0)' : 'none',
+                }}
               />
               <Image
-                className="hidden max-h-[50px] w-auto sm:max-h-[60px] md:max-h-[80px] lg:max-h-[100px] xl:max-h-[120px] dark:inline-block"
+                className="hidden max-h-[50px] w-auto sm:max-h-[60px] md:max-h-[80px] lg:max-h-[100px] xl:max-h-[120px] dark:inline-block transition-all duration-300"
                 src={logoDark}
                 alt="logo"
                 width={136}
                 height={68}
                 priority
+                style={{
+                  filter: hasScrolledPastHero ? 'brightness(0)' : 'none',
+                }}
               />
             </Link>
             <div className="flex items-center">
               <button
                 ref={openBtnRef}
                 onClick={openMenu}
-                className="menu-open relative h-[68px] w-[68px] cursor-pointer before:absolute before:left-1/2 before:top-[28px] before:h-0.5 before:w-9 before:-translate-x-1/2 before:bg-black before:transition-all before:duration-300 before:content-[''] after:absolute after:bottom-[28px] after:left-1/2 after:h-0.5 after:w-9 after:-translate-x-1/2 after:bg-black after:transition-all after:duration-300 after:content-[''] hover:before:top-[25px] hover:after:bottom-[25px] dark:before:bg-white dark:after:bg-white"
+                className="menu-open hidden relative h-[68px] w-[68px] cursor-pointer before:absolute before:left-1/2 before:top-[28px] before:h-0.5 before:w-9 before:-translate-x-1/2 before:bg-black before:transition-all before:duration-300 before:content-[''] after:absolute after:bottom-[28px] after:left-1/2 after:h-0.5 after:w-9 after:-translate-x-1/2 after:bg-black after:transition-all after:duration-300 after:content-[''] hover:before:top-[25px] hover:after:bottom-[25px] dark:before:bg-white dark:after:bg-white"
                 aria-label="Open Menu"></button>
             </div>
           </div>

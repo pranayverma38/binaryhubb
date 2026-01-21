@@ -139,7 +139,7 @@ const ServicesV14 = () => {
             }}>
             <div className="grid grid-cols-1 gap-8 md:grid-cols-12 md:gap-8 lg:gap-12">
               {/* Left Column: Number and Title */}
-              <RevealWrapper className="md:col-span-2" delay={index * 0.3}>
+              <RevealWrapper className="md:col-span-2" delay={index * 0.1}>
                 <div className="flex flex-col">
                   <span className="mb-2 text-sm font-light tracking-wider text-[#403e39] md:mb-4">
                     {service.number}
@@ -151,14 +151,14 @@ const ServicesV14 = () => {
               </RevealWrapper>
 
               {/* Middle Column: Description */}
-              <RevealWrapper className="md:col-span-6" delay={index * 0.3 + 0.1}>
+              <RevealWrapper className="md:col-span-6" delay={index * 0.1 + 0.1}>
                 <p className="text-left text-[#403e39] text-base md:text-lg leading-relaxed max-w-2xl">
                   {service.description}
                 </p>
               </RevealWrapper>
 
               {/* Right Column: Image */}
-              <RevealWrapper className="md:col-span-4" delay={index * 0.3 + 0.3}>
+              <RevealWrapper className="md:col-span-4" delay={index * 0.1 + 0.1}>
                 <div className="relative h-[300px] w-full overflow-hidden md:h-[400px] lg:h-[220px] xl:h-[230px]">
                   <div className="parallax-image-container relative h-[120%] w-full -top-[10%]">
                     <Image
