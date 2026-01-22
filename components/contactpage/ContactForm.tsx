@@ -254,7 +254,7 @@ const ContactForm = () => {
             </div>
           </RevealWrapper>
 
-          <div className="mt-12 flex justify-center overflow-visible py-6 md:mt-14 md:pt-6">
+          <div className="mt-12 flex flex-col items-center justify-center gap-4 overflow-visible py-6 md:mt-14 md:pt-6">
             <button
               type="submit"
               className="px-8 py-4 min-w-[200px] rounded-lg border-2 font-semibold text-white transition-all duration-200 hover:shadow-[0_0_12px_rgba(114,47,55,0.4)]"
@@ -263,8 +263,11 @@ const ContactForm = () => {
                 borderColor: BURGUNDY,
                 color: 'white',
               }}>
-              Send Enquiry
+              <span className="instrument-serif-regular-italic text-lg text-white">BEHOLD</span>
             </button>
+            <p className="text-center text-sm text-[#181818]/60">
+              All information submitted will be treated in a highly confidential way.
+            </p>
           </div>
         </form>
       </div>
