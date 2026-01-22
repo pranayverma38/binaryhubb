@@ -1,16 +1,53 @@
 'use client'
-import React, { useState } from 'react'
+
+import React, { useState, useRef } from 'react'
 import RevealWrapper from '../animation/RevealWrapper'
+
+const inputBase =
+  'mt-4 w-full border-0 border-b border-[#181818]/15 bg-transparent py-4 pl-0 text-lg tracking-[0.02em] text-[#181818] placeholder:text-[#181818]/40 transition-colors duration-300 focus:border-[#181818] focus:outline-none focus:ring-0 instrument-serif-regular'
+
+const labelBase =
+  'block text-base uppercase text-[#181818] instrument-serif-regular md:text-lg'
+
+const ChevronDown = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className="text-[#181818]/50">
+    <path d="M6 9l6 6 6-6" />
+  </svg>
+)
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
     name: '',
+    coordinateOfOrigin: '',
+    contactMethod: 'whatsapp',
+    conciergeEmail: '',
     company: '',
     email: '',
-    service: 'UI/UX',
-    budget: '40k',
+    service: 'ui-ux',
+    budget: '25-50',
     message: '',
   })
+  const buttonRef = useRef<HTMLButtonElement>(null)
+  const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 })
+  const [isHovered, setIsHovered] = useState(false)
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (!buttonRef.current) return
+    const rect = buttonRef.current.getBoundingClientRect()
+    const x = ((e.clientX - rect.left) / rect.width) * 100
+    const y = ((e.clientY - rect.top) / rect.height) * 100
+    setMousePosition({ x, y })
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -20,191 +57,198 @@ const ContactForm = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     console.log('Form Data Submitted:', formData)
-    alert(`${formData.name} Your Data Has Been Submited`)
-    // Add your form submission logic here (e.g., API call)
+    alert(`${formData.name}, your enquiry has been received. We'll be in touch shortly.`)
   }
 
   return (
-    <section className="pb-14 md:pb-16 lg:pb-[88px] xl:pb-[100px]">
+    <section className="pb-24 md:pb-32 lg:pb-40 xl:pb-44">
       <div className="container">
-        <RevealWrapper
-          as="form"
+        <form
+          id="contact-form"
           onSubmit={handleSubmit}
-          className="reveal-me mx-auto grid max-w-[800px] grid-cols-1 gap-[30px] md:grid-cols-2">
-          <div className="md:col-span-full">
-            <label
-              htmlFor="name"
-              className="text-2xl leading-[1.2] tracking-[-0.48px] text-[#000000b3] dark:text-dark-100">
-              Full Name
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="Enter your full name"
-              className="mt-3 w-full border bg-backgroundBody py-4 pl-5 text-xl leading-[1.4] tracking-[0.4px] text-colorText focus:border-primary focus:outline-none dark:border-dark dark:bg-dark"
-              required
-            />
-          </div>
+          className="mx-auto max-w-[720px]">
+          <RevealWrapper
+            as="div"
+            className="reveal-me grid grid-cols-1 gap-x-16 gap-y-12 md:grid-cols-2 md:gap-y-14">
+            <div className="md:col-span-full">
+              <label htmlFor="name" className={labelBase}>
+                The Names to be Inscribed
+              </label>
+              <p className="mt-1.5 text-base text-[#181818]/50 instrument-serif-regular md:text-lg">
+                (To be hand-rendered upon the opening leaf of your Chronicle)
+              </p>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Type Here"
+                className={inputBase}
+                required
+              />
+            </div>
 
-          <div>
-            <label
-              htmlFor="company"
-              className="text-2xl leading-[1.2] tracking-[-0.48px] text-[#000000b3] dark:text-dark-100">
-              Company Name
-            </label>
-            <input
-              type="text"
-              id="company"
-              name="company"
-              value={formData.company}
-              onChange={handleChange}
-              placeholder="Your company name"
-              className="mt-3 w-full border bg-backgroundBody py-4 pl-5 text-xl leading-[1.4] tracking-[0.4px] text-colorText focus:border-primary focus:outline-none dark:border-dark dark:bg-dark"
-            />
-          </div>
+            <div className="relative md:col-span-full">
+              <label htmlFor="contactMethod" className={labelBase}>
+                How may the House&apos;s Concierge reach you?
+              </label>
+              <select
+                id="contactMethod"
+                name="contactMethod"
+                value={formData.contactMethod}
+                onChange={handleChange}
+                className={`${inputBase} cursor-pointer appearance-none pr-10`}
+                required>
+                <option value="whatsapp">WhatsApp</option>
+                <option value="email">E-mail</option>
+              </select>
+              <span className="pointer-events-none absolute right-0 top-[3.5rem] -translate-y-1/2">
+                <ChevronDown />
+              </span>
+            </div>
 
-          <div>
-            <label
-              htmlFor="email"
-              className="text-2xl leading-[1.2] tracking-[-0.48px] text-[#000000b3] dark:text-dark-100">
-              Work Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="name@company.com"
-              className="mt-3 w-full border bg-backgroundBody py-4 pl-5 text-xl leading-[1.4] tracking-[0.4px] text-colorText focus:border-primary focus:outline-none dark:border-dark dark:bg-dark"
-              required
-            />
-          </div>
-
-          <div className="relative">
-            <label
-              htmlFor="service"
-              className="text-2xl leading-[1.2] tracking-[-0.48px] text-[#000000b3] dark:text-dark-100">
-              Service Type*
-            </label>
-            <select
-              id="service"
-              name="service"
-              value={formData.service}
-              onChange={handleChange}
-              className="mt-3 w-full appearance-none text-ellipsis border bg-backgroundBody px-5 py-4 indent-px text-xl leading-[1.4] tracking-[0.4px] text-colorText focus:border-primary focus:outline-none dark:border-dark dark:bg-dark"
-              required>
-              <option value="UI/UX">UX Design</option>
-              <option value="Web design">Product Design</option>
-              <option value="Web development">Brand Identity</option>
-              <option value="Web development">Design System</option>
-            </select>
-            <span className="absolute right-5 top-1/2 translate-y-1/3">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                className="inline dark:hidden">
-                <path
-                  d="M6 9L12 15L18 9"
-                  stroke="black"
-                  strokeOpacity="0.7"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+            {formData.contactMethod === 'email' && (
+              <div className="md:col-span-full">
+                <label htmlFor="conciergeEmail" className={labelBase}>
+                  Email address
+                </label>
+                <input
+                  type="email"
+                  id="conciergeEmail"
+                  name="conciergeEmail"
+                  value={formData.conciergeEmail}
+                  onChange={handleChange}
+                  placeholder="name@example.com"
+                  className={inputBase}
+                  required
                 />
-              </svg>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                className="hidden dark:inline"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none">
-                <path
-                  d="M6 9L12 15L18 9"
-                  stroke="white"
-                  strokeOpacity="0.7"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </span>
-          </div>
-
-          <div className="relative">
-            <label
-              htmlFor="budget"
-              className="text-2xl leading-[1.2] tracking-[-0.48px] text-[#000000b3] dark:text-dark-100">
-              Project Budget*
-            </label>
-            <select
-              id="budget"
-              name="budget"
-              value={formData.budget}
-              onChange={handleChange}
-              className="mt-3 w-full appearance-none text-ellipsis border bg-backgroundBody px-5 py-4 indent-px text-xl leading-[1.4] tracking-[0.4px] text-colorText focus:border-primary focus:outline-none dark:border-dark dark:bg-dark"
-              required>
-              <option value="40k">$10k - $25k</option>
-              <option value="55k">$25k - $50k</option>
-              <option value="90k">$50k - $100k</option>
-              <option value="100k+">$100k+</option>
-            </select>
-            <span className="absolute right-5 top-1/2 inline translate-y-1/3 dark:hidden">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M6 9L12 15L18 9"
-                  stroke="black"
-                  strokeOpacity="0.7"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </span>
-            <span className="absolute right-5 top-1/2 hidden translate-y-1/3 dark:inline">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M6 9L12 15L18 9"
-                  stroke="white"
-                  strokeOpacity="0.7"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </span>
-          </div>
-
-          <div className="md:col-span-full">
-            <label
-              htmlFor="message"
-              className="text-2xl leading-[1.2] tracking-[-0.48px] text-[#000000b3] dark:text-dark-100">
-              Project Brief*
-            </label>
-            <textarea
-              id="message"
-              name="message"
-              value={formData.message}
-              onChange={handleChange}
-              placeholder="Tell us about your project goals and timeline"
-              className="mt-3 w-full border bg-backgroundBody py-4 pl-5 text-xl leading-[1.4] tracking-[0.4px] text-colorText focus:border-primary focus:outline-none dark:border-dark dark:bg-dark"
-              required></textarea>
-          </div>
-
-          <div className="col-span-full sm:mt-14 md:mx-auto">
-            <button type="submit" className="rv-button rv-button-primary block w-full md:inline-block md:w-auto">
-              <div className="rv-button-top">
-                <span>Send Message</span>
               </div>
-              <div className="rv-button-bottom">
-                <span className="text-nowrap">Send Message</span>
-              </div>
+            )}
+
+            <div className="md:col-span-full">
+              <label htmlFor="coordinateOfOrigin" className={labelBase}>
+                The Coordinate of Origin
+              </label>
+              <p className="mt-1.5 text-base text-[#181818]/50 instrument-serif-regular md:text-lg">
+                (Identify the singular day your shared history began. This date will be hand-inscribed alongside your names on the opening leaf of the Chronicle, anchoring your Archive to the moment of your origin.)
+              </p>
+              <input
+                type="date"
+                id="coordinateOfOrigin"
+                name="coordinateOfOrigin"
+                value={formData.coordinateOfOrigin}
+                onChange={handleChange}
+                className={inputBase}
+                required
+              />
+            </div>
+
+            <div>
+              <label htmlFor="company" className={labelBase}>
+                Company
+              </label>
+              <input
+                type="text"
+                id="company"
+                name="company"
+                value={formData.company}
+                onChange={handleChange}
+                placeholder="Company name"
+                className={inputBase}
+              />
+            </div>
+
+            <div className="relative">
+              <label htmlFor="service" className={labelBase}>
+                Service
+              </label>
+              <select
+                id="service"
+                name="service"
+                value={formData.service}
+                onChange={handleChange}
+                className={`${inputBase} cursor-pointer appearance-none pr-10`}
+                required>
+                <option value="ui-ux">UX Design</option>
+                <option value="product">Product Design</option>
+                <option value="brand">Brand Identity</option>
+                <option value="design-system">Design System</option>
+              </select>
+              <span className="pointer-events-none absolute right-0 top-[3.5rem] -translate-y-1/2">
+                <ChevronDown />
+              </span>
+            </div>
+
+            <div className="relative">
+              <label htmlFor="budget" className={labelBase}>
+                Project Budget
+              </label>
+              <select
+                id="budget"
+                name="budget"
+                value={formData.budget}
+                onChange={handleChange}
+                className={`${inputBase} cursor-pointer appearance-none pr-10`}
+                required>
+                <option value="10-25">$10k – $25k</option>
+                <option value="25-50">$25k – $50k</option>
+                <option value="50-100">$50k – $100k</option>
+                <option value="100+">$100k+</option>
+              </select>
+              <span className="pointer-events-none absolute right-0 top-[3.5rem] -translate-y-1/2">
+                <ChevronDown />
+              </span>
+            </div>
+
+            <div className="md:col-span-full">
+              <label htmlFor="message" className={labelBase}>
+                Project Brief
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
+                placeholder="Tell us about your goals and timeline..."
+                rows={5}
+                className={`${inputBase} min-h-[140px] resize-none pt-2`}
+                required
+              />
+            </div>
+          </RevealWrapper>
+
+          <div className="mt-12 flex justify-center overflow-visible py-6 md:mt-14 md:pt-6">
+            <button
+              ref={buttonRef}
+              type="submit"
+              onMouseMove={handleMouseMove}
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+              className="relative px-8 py-4 bg-white/40 backdrop-blur-sm border-2 text-black font-semibold rounded-lg transition-all duration-300 overflow-hidden group min-w-[200px]"
+              style={{
+                background: isHovered
+                  ? `radial-gradient(circle 150px at ${mousePosition.x}% ${mousePosition.y}%, rgba(255, 215, 0, 0.3) 0%, rgba(255, 255, 255, 0.4) 70%)`
+                  : 'rgba(255, 255, 255, 0.4)',
+                boxShadow: isHovered
+                  ? '0 0 40px rgba(255, 215, 0, 0.7), 0 0 20px rgba(255, 255, 255, 0.6), 0 4px 15px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.6)'
+                  : '0 0 30px rgba(255, 255, 255, 0.5), 0 4px 15px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.5)',
+                borderColor: isHovered ? 'rgba(255, 215, 0, 0.6)' : 'rgba(255, 255, 255, 0.4)',
+              }}>
+              <span className="relative z-10">Send Enquiry</span>
+              {isHovered && (
+                <div
+                  className="absolute inset-0 pointer-events-none transition-opacity duration-300"
+                  style={{
+                    background: `radial-gradient(circle 120px at ${mousePosition.x}% ${mousePosition.y}%, rgba(255, 215, 0, 0.6) 0%, transparent 70%)`,
+                    filter: 'blur(20px)',
+                    opacity: 1,
+                  }}
+                />
+              )}
             </button>
           </div>
-        </RevealWrapper>
+        </form>
       </div>
     </section>
   )

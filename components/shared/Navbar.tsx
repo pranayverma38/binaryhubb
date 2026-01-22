@@ -13,6 +13,7 @@ import { MenuList } from '../navbarCompo/menu-list'
 
 export default function Navbar() {
   const pathname = usePathname()
+  const isHomePage = pathname === '/'
   const [hasScrolledPastHero, setHasScrolledPastHero] = useState(false)
   const [isVisible, setIsVisible] = useState(true)
   const [isMobile, setIsMobile] = useState(false)
@@ -357,7 +358,7 @@ export default function Navbar() {
                 height={68}
                 priority
                 style={{
-                  filter: hasScrolledPastHero ? 'brightness(0)' : 'none',
+                  filter: !isHomePage || hasScrolledPastHero ? 'brightness(0)' : 'none',
                 }}
               />
               <Image
@@ -368,7 +369,7 @@ export default function Navbar() {
                 height={68}
                 priority
                 style={{
-                  filter: hasScrolledPastHero ? 'brightness(0)' : 'none',
+                  filter: !isHomePage || hasScrolledPastHero ? 'brightness(0)' : 'none',
                 }}
               />
             </Link>

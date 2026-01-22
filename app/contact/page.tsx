@@ -10,16 +10,34 @@ export const metadata = {
 
 const ContactPage = () => {
   return (
-    <LayoutOne>
+    <LayoutOne
+      mainClassName="min-h-screen"
+      mainStyle={{
+        backgroundColor: '#ede9e4',
+        backgroundImage:
+          'linear-gradient(rgba(237, 233, 228, 0.90), rgba(237, 233, 228, 0.85)), url(/images/luximg.png)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundAttachment: 'fixed',
+      }}>
       <PageHero
-        title="Let's Work Together"
-        badgeTitle="Contact"
-        description="Discover our innovative, cutting-edge no-code websites, crafted to effortlessly captivate and engage your visitors."
-        scale
-        spacing="pt-[130px] md:pt-[180px] pb-20 sm:pb-32 md:pb-36 lg:pb-36 xl:pb-[100px] relative overflow-hidden"
+        // badgeTitle="Contact"
+        title="Private Access"
+        // description="Share your vision with us. We craft bespoke digital experiences that elevate brands and captivate audiences."
+        showGradient={false}
+        spacing="pt-[130px] md:pt-[140px] pb-16 sm:pb-24 md:pb-28 lg:pb-32 xl:pb-20 relative overflow-hidden"
+        sectionClassName="bg-transparent"
+        titleClassName="instrument-serif-regular text-[#181818]"
+        descriptionClassName="text-[#181818]/70 max-w-[520px]"
+        badgeClassName="!bg-[#181818]/10"
       />
       <ContactForm />
-      <CTA>
+      {/* <CTA
+        headingClass="instrument-serif-regular text-[#181818]"
+        buttonHref="/"
+        buttonText="Back to Home"
+        buttonVariant="secondary">
         Let's chat!
         <CtaImageSlider
           slides={[
@@ -29,8 +47,10 @@ const ContactPage = () => {
           ]}
         />
         with us.
-        <i className="block font-instrument italic max-md:inline-block max-sm:pl-2 sm:mt-10">A virtual coffee?</i>
-      </CTA>
+        <i className="block font-instrument italic max-md:inline-block max-sm:pl-2 sm:mt-10">
+          A virtual coffee?
+        </i>
+      </CTA> */}
     </LayoutOne>
   )
 }
