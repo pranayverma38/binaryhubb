@@ -1,7 +1,65 @@
 'use client'
 
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
 import RevealWrapper from '../animation/RevealWrapper'
+
+const BURGUNDY = '#722F37'
+
+const ORDINALS: Record<number, string> = {
+  1: 'first', 2: 'second', 3: 'third', 4: 'fourth', 5: 'fifth', 6: 'sixth',
+  7: 'seventh', 8: 'eighth', 9: 'ninth', 10: 'tenth', 11: 'eleventh',
+  12: 'twelfth', 13: 'thirteenth', 14: 'fourteenth', 15: 'fifteenth',
+  16: 'sixteenth', 17: 'seventeenth', 18: 'eighteenth', 19: 'nineteenth',
+  20: 'twentieth', 21: 'twenty-first', 22: 'twenty-second', 23: 'twenty-third',
+  24: 'twenty-fourth', 25: 'twenty-fifth', 26: 'twenty-sixth',
+  27: 'twenty-seventh', 28: 'twenty-eighth', 29: 'twenty-ninth',
+  30: 'thirtieth', 31: 'thirty-first',
+}
+
+const MONTHS = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December',
+]
+
+const UNITS = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
+const TEENS = ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen']
+const TENS = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety']
+
+function numberToWords(n: number): string {
+  if (n === 0) return 'zero'
+  if (n < 10) return UNITS[n]
+  if (n < 20) return TEENS[n - 10]
+  if (n < 100) {
+    const t = Math.floor(n / 10)
+    const u = n % 10
+    return u ? `${TENS[t]} ${UNITS[u]}` : TENS[t]
+  }
+  if (n < 1000) {
+    const h = Math.floor(n / 100)
+    const rest = n % 100
+    return rest ? `${UNITS[h]} hundred and ${numberToWords(rest)}` : `${UNITS[h]} hundred`
+  }
+  if (n < 10000) {
+    const th = Math.floor(n / 1000)
+    const rest = n % 1000
+    const thousands = th === 1 ? 'one thousand' : `${UNITS[th]} thousand`
+    return rest ? `${thousands} and ${numberToWords(rest)}` : thousands
+  }
+  return String(n)
+}
+
+function dateToEnglish(dateStr: string): string | null {
+  if (!dateStr) return null
+  const d = new Date(dateStr + 'T12:00:00')
+  if (Number.isNaN(d.getTime())) return null
+  const day = d.getDate()
+  const month = MONTHS[d.getMonth()]
+  const year = d.getFullYear()
+  const dayOrdinal = ORDINALS[day]
+  const yearWords = numberToWords(year)
+  if (!dayOrdinal) return null
+  return `The ${dayOrdinal} day of ${month} ${yearWords}`
+}
 
 const inputBase =
   'mt-4 w-full border-0 border-b border-[#181818]/15 bg-transparent py-4 pl-0 text-lg tracking-[0.02em] text-[#181818] placeholder:text-[#181818]/40 transition-colors duration-300 focus:border-[#181818] focus:outline-none focus:ring-0 instrument-serif-regular'
@@ -29,26 +87,12 @@ const ContactForm = () => {
   const [formData, setFormData] = useState({
     name: '',
     coordinateOfOrigin: '',
+    archiveLanguage: 'english',
+    natureOfAcquisition: 'legacy-gift',
     contactMethod: 'whatsapp',
     conciergeEmail: '',
-    company: '',
-    email: '',
-    service: 'ui-ux',
-    budget: '25-50',
     message: '',
   })
-  const buttonRef = useRef<HTMLButtonElement>(null)
-  const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 })
-  const [isHovered, setIsHovered] = useState(false)
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (!buttonRef.current) return
-    const rect = buttonRef.current.getBoundingClientRect()
-    const x = ((e.clientX - rect.left) / rect.width) * 100
-    const y = ((e.clientY - rect.top) / rect.height) * 100
-    setMousePosition({ x, y })
-  }
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
@@ -59,6 +103,10 @@ const ContactForm = () => {
     console.log('Form Data Submitted:', formData)
     alert(`${formData.name}, your enquiry has been received. We'll be in touch shortly.`)
   }
+
+  const dateEnglish = formData.coordinateOfOrigin
+    ? dateToEnglish(formData.coordinateOfOrigin)
+    : null
 
   return (
     <section className="pb-24 md:pb-32 lg:pb-40 xl:pb-44">
@@ -142,38 +190,28 @@ const ContactForm = () => {
                 className={inputBase}
                 required
               />
-            </div>
-
-            <div>
-              <label htmlFor="company" className={labelBase}>
-                Company
-              </label>
-              <input
-                type="text"
-                id="company"
-                name="company"
-                value={formData.company}
-                onChange={handleChange}
-                placeholder="Company name"
-                className={inputBase}
-              />
+              {dateEnglish && (
+                <p
+                  className="mt-2 text-base instrument-serif-regular md:text-lg"
+                  style={{ color: BURGUNDY }}>
+                  {dateEnglish}
+                </p>
+              )}
             </div>
 
             <div className="relative">
-              <label htmlFor="service" className={labelBase}>
-                Service
+              <label htmlFor="archiveLanguage" className={labelBase}>
+                Do you prefer your archive in English or Arabic ?
               </label>
               <select
-                id="service"
-                name="service"
-                value={formData.service}
+                id="archiveLanguage"
+                name="archiveLanguage"
+                value={formData.archiveLanguage}
                 onChange={handleChange}
                 className={`${inputBase} cursor-pointer appearance-none pr-10`}
                 required>
-                <option value="ui-ux">UX Design</option>
-                <option value="product">Product Design</option>
-                <option value="brand">Brand Identity</option>
-                <option value="design-system">Design System</option>
+                <option value="english">English</option>
+                <option value="arabic">Arabic</option>
               </select>
               <span className="pointer-events-none absolute right-0 top-[3.5rem] -translate-y-1/2">
                 <ChevronDown />
@@ -181,20 +219,18 @@ const ContactForm = () => {
             </div>
 
             <div className="relative">
-              <label htmlFor="budget" className={labelBase}>
-                Project Budget
+              <label htmlFor="natureOfAcquisition" className={labelBase}>
+                Nature of Acquisition- A Legacy Gift/ A personal Foundation ?
               </label>
               <select
-                id="budget"
-                name="budget"
-                value={formData.budget}
+                id="natureOfAcquisition"
+                name="natureOfAcquisition"
+                value={formData.natureOfAcquisition}
                 onChange={handleChange}
                 className={`${inputBase} cursor-pointer appearance-none pr-10`}
                 required>
-                <option value="10-25">$10k – $25k</option>
-                <option value="25-50">$25k – $50k</option>
-                <option value="50-100">$50k – $100k</option>
-                <option value="100+">$100k+</option>
+                <option value="legacy-gift">A Legacy Gift</option>
+                <option value="personal-foundation">A personal Foundation</option>
               </select>
               <span className="pointer-events-none absolute right-0 top-[3.5rem] -translate-y-1/2">
                 <ChevronDown />
@@ -203,14 +239,14 @@ const ContactForm = () => {
 
             <div className="md:col-span-full">
               <label htmlFor="message" className={labelBase}>
-                Project Brief
+                The Intimate Decree
               </label>
               <textarea
                 id="message"
                 name="message"
                 value={formData.message}
                 onChange={handleChange}
-                placeholder="Tell us about your goals and timeline..."
+                placeholder="Compose a message to your beloved. Our calligraphers will transcribe your words into a sealed parchment to be discovered within the Threshold."
                 rows={5}
                 className={`${inputBase} min-h-[140px] resize-none pt-2`}
                 required
@@ -220,32 +256,14 @@ const ContactForm = () => {
 
           <div className="mt-12 flex justify-center overflow-visible py-6 md:mt-14 md:pt-6">
             <button
-              ref={buttonRef}
               type="submit"
-              onMouseMove={handleMouseMove}
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
-              className="relative px-8 py-4 bg-white/40 backdrop-blur-sm border-2 text-black font-semibold rounded-lg transition-all duration-300 overflow-hidden group min-w-[200px]"
+              className="px-8 py-4 min-w-[200px] rounded-lg border-2 font-semibold text-white transition-all duration-200 hover:shadow-[0_0_12px_rgba(114,47,55,0.4)]"
               style={{
-                background: isHovered
-                  ? `radial-gradient(circle 150px at ${mousePosition.x}% ${mousePosition.y}%, rgba(255, 215, 0, 0.3) 0%, rgba(255, 255, 255, 0.4) 70%)`
-                  : 'rgba(255, 255, 255, 0.4)',
-                boxShadow: isHovered
-                  ? '0 0 40px rgba(255, 215, 0, 0.7), 0 0 20px rgba(255, 255, 255, 0.6), 0 4px 15px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.6)'
-                  : '0 0 30px rgba(255, 255, 255, 0.5), 0 4px 15px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.5)',
-                borderColor: isHovered ? 'rgba(255, 215, 0, 0.6)' : 'rgba(255, 255, 255, 0.4)',
+                backgroundColor: BURGUNDY,
+                borderColor: BURGUNDY,
+                color: 'white',
               }}>
-              <span className="relative z-10">Send Enquiry</span>
-              {isHovered && (
-                <div
-                  className="absolute inset-0 pointer-events-none transition-opacity duration-300"
-                  style={{
-                    background: `radial-gradient(circle 120px at ${mousePosition.x}% ${mousePosition.y}%, rgba(255, 215, 0, 0.6) 0%, transparent 70%)`,
-                    filter: 'blur(20px)',
-                    opacity: 1,
-                  }}
-                />
-              )}
+              Send Enquiry
             </button>
           </div>
         </form>
