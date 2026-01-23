@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import RevealWrapper from '../animation/RevealWrapper'
 
 const BURGUNDY = '#722F37'
@@ -93,6 +93,9 @@ const ContactForm = () => {
     conciergeEmail: '',
     message: '',
   })
+  const [isSubmitted, setIsSubmitted] = useState(false)
+  const audioRef = useRef<HTMLAudioElement | null>(null)
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
@@ -100,8 +103,19 @@ const ContactForm = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    
+    // Trigger confirmation popup
+    setIsSubmitted(true)
+    
+    // Play the paper sound
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0 // Reset to start
+      audioRef.current.play().catch((error) => {
+        console.error('Error playing sound:', error)
+      })
+    }
+    
     console.log('Form Data Submitted:', formData)
-    alert(`${formData.name}, your enquiry has been received. We'll be in touch shortly.`)
   }
 
   const dateEnglish = formData.coordinateOfOrigin
@@ -110,6 +124,21 @@ const ContactForm = () => {
 
   return (
     <section className="pb-24 md:pb-32 lg:pb-40 xl:pb-44">
+      {isSubmitted && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 backdrop-grayscale backdrop-brightness-75">
+          <div className="mx-4 w-full max-w-xl rounded-2xl bg-white px-6 py-6 text-center shadow-2xl md:px-8 md:py-8">
+            <p className="instrument-serif-regular text-base text-[#181818] md:text-lg">
+              Your intent has been formally recorded within the House of Binaryhubb. A single unit of Edition I has been provisionally withheld in your name as you join the Global Waitlist. Should you be selected as one of the fifty keepers, a personal invitation will be dispatched to you following the 04.04.2026 Threshold. We thank you for your patience while the selection is finalized.
+            </p>
+            <button
+              type="button"
+              className="mt-6 inline-flex items-center justify-center rounded-full border px-6 py-2 text-sm uppercase tracking-[0.12em] text-[#181818] transition-colors duration-200 hover:bg-[#181818] hover:text-white"
+              onClick={() => window.location.reload()}>
+              Close
+            </button>
+          </div>
+        </div>
+      )}
       <div className="container">
         <form
           id="contact-form"
@@ -271,6 +300,7 @@ const ContactForm = () => {
           </div>
         </form>
       </div>
+      <audio ref={audioRef} src="/sounds/papersound.mp3" preload="auto" />
     </section>
   )
 }
