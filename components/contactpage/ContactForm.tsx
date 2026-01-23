@@ -239,7 +239,7 @@ const ContactForm = () => {
                 onChange={handleChange}
                 className={`${inputBase} cursor-pointer appearance-none pr-10`}
                 required>
-                <option value="english">English</option>
+                <option value="english">English</option>st
                 <option value="arabic">Arabic</option>
               </select>
               <span className="pointer-events-none absolute right-0 top-[3.5rem] -translate-y-1/2">
