@@ -125,8 +125,38 @@ const ContactForm = () => {
   return (
     <section className="pb-24 md:pb-32 lg:pb-40 xl:pb-44">
       {isSubmitted && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 backdrop-grayscale backdrop-brightness-75">
-          <div className="mx-4 w-full max-w-xl rounded-2xl bg-white px-6 py-6 text-center shadow-2xl md:px-8 md:py-8">
+        <div 
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 backdrop-grayscale backdrop-brightness-75"
+          style={{
+            animation: 'fadeIn 0.8s ease-out forwards',
+          }}>
+          <div 
+            className="mx-4 w-full max-w-xl rounded-2xl bg-white px-6 py-6 text-center shadow-2xl md:px-8 md:py-8"
+            style={{
+              animation: 'fadeInScale 0.8s ease-out 0.1s forwards',
+              opacity: 0,
+              transform: 'scale(0.95)',
+            }}>
+            <style>{`
+              @keyframes fadeIn {
+                from {
+                  opacity: 0;
+                }
+                to {
+                  opacity: 1;
+                }
+              }
+              @keyframes fadeInScale {
+                from {
+                  opacity: 0;
+                  transform: scale(0.95);
+                }
+                to {
+                  opacity: 1;
+                  transform: scale(1);
+                }
+              }
+            `}</style>
             <p className="instrument-serif-regular text-base text-[#181818] md:text-lg">
               Your intent has been formally recorded within the House of Binaryhubb. A single unit of Edition I has been provisionally withheld in your name as you join the Global Waitlist. Should you be selected as one of the fifty keepers, a personal invitation will be dispatched to you following the 04.04.2026 Threshold. We thank you for your patience while the selection is finalized.
             </p>
@@ -239,7 +269,7 @@ const ContactForm = () => {
                 onChange={handleChange}
                 className={`${inputBase} cursor-pointer appearance-none pr-10`}
                 required>
-                <option value="english">English</option>st
+                <option value="english">English</option>
                 <option value="arabic">Arabic</option>
               </select>
               <span className="pointer-events-none absolute right-0 top-[3.5rem] -translate-y-1/2">
