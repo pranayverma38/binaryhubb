@@ -69,6 +69,10 @@ const Footer = () => {
           BINARYHUBB
         </h5>
       </div>
+
+      <div className="special-elite absolute bottom-[8%] right-1/2 translate-x-1/2 lg:right-[5%] lg:translate-x-0" style={{ color: '#de9645' }}>
+        LISCENCE : 889376
+      </div>
     </FooterProvider>
   )
 }
