@@ -91,31 +91,62 @@ const ContactForm = () => {
     natureOfAcquisition: 'legacy-gift',
     contactMethod: 'whatsapp',
     conciergeEmail: '',
+    whatsappNumber: '',
     message: '',
   })
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const audioRef = useRef<HTMLAudioElement | null>(null)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
+    // Clear error when user starts typing
+    if (error) setError(null)
   }
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    
-    // Trigger confirmation popup
-    setIsSubmitted(true)
-    
-    // Play the paper sound
-    if (audioRef.current) {
-      audioRef.current.currentTime = 0 // Reset to start
-      audioRef.current.play().catch((error) => {
-        console.error('Error playing sound:', error)
+    setIsLoading(true)
+    setError(null)
+
+    try {
+      // Send form data to API
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
       })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to submit form')
+      }
+
+      // Success - trigger confirmation popup
+      setIsSubmitted(true)
+
+      // Play the paper sound
+      if (audioRef.current) {
+        audioRef.current.currentTime = 0 // Reset to start
+        audioRef.current.play().catch((error) => {
+          console.error('Error playing sound:', error)
+        })
+      }
+    } catch (err) {
+      console.error('Form submission error:', err)
+      setError(
+        err instanceof Error
+          ? err.message
+          : 'An error occurred while submitting the form. Please try again.'
+      )
+    } finally {
+      setIsLoading(false)
     }
-    
-    console.log('Form Data Submitted:', formData)
   }
 
   const dateEnglish = formData.coordinateOfOrigin
@@ -233,6 +264,24 @@ const ContactForm = () => {
               </div>
             )}
 
+            {formData.contactMethod === 'whatsapp' && (
+              <div className="md:col-span-full">
+                <label htmlFor="whatsappNumber" className={labelBase}>
+                  WhatsApp number
+                </label>
+                <input
+                  type="tel"
+                  id="whatsappNumber"
+                  name="whatsappNumber"
+                  value={formData.whatsappNumber}
+                  onChange={handleChange}
+                  placeholder="+1234567890"
+                  className={inputBase}
+                  required
+                />
+              </div>
+            )}
+
             <div className="md:col-span-full">
               <label htmlFor="coordinateOfOrigin" className={labelBase}>
                 The Coordinate of Origin
@@ -314,15 +363,28 @@ const ContactForm = () => {
           </RevealWrapper>
 
           <div className="mt-12 flex flex-col items-center justify-center gap-4 overflow-visible py-6 md:mt-14 md:pt-6">
+            {error && (
+              <div
+                className="w-full max-w-[720px] rounded-lg border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-800"
+                role="alert">
+                <p className="font-medium">Error: {error}</p>
+                <p className="mt-1 text-xs text-red-600">
+                  Please check your information and try again.
+                </p>
+              </div>
+            )}
             <button
               type="submit"
-              className="px-8 py-4 min-w-[200px] rounded-lg border-2 font-semibold text-white transition-all duration-200 hover:shadow-[0_0_12px_rgba(114,47,55,0.4)]"
+              disabled={isLoading}
+              className="px-8 py-4 min-w-[200px] rounded-lg border-2 font-semibold text-white transition-all duration-200 hover:shadow-[0_0_12px_rgba(114,47,55,0.4)] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:shadow-none"
               style={{
                 backgroundColor: BURGUNDY,
                 borderColor: BURGUNDY,
                 color: 'white',
               }}>
-              <span className="instrument-serif-regular-italic text-lg text-white">BEHOLD</span>
+              <span className="instrument-serif-regular-italic text-lg text-white">
+                {isLoading ? 'SUBMITTING...' : 'BEHOLD'}
+              </span>
             </button>
             <p className="text-center text-sm text-[#181818]/60">
               All information submitted will be treated in a highly confidential way.
