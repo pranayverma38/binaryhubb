@@ -96,8 +96,8 @@ const ServicesV14 = () => {
           gsap.fromTo(
             cardRef,
             {
-              scale: 0.92,
-              y: -80,
+              scale: 0.85,
+              y: -120,
             },
             {
               scale: 1,
