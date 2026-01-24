@@ -7,10 +7,11 @@ import TextAppearAnimation from '../animation/TextAppearAnimation'
 
 const ProcessV2 = () => {
   const [hoverGroup, setHoverGroup] = useState<'first' | 'last' | null>(null)
-  const [waveActive, setWaveActive] = useState(false)
+  const [initialGlow, setInitialGlow] = useState(false)
   const dotsGridRef = useRef<HTMLDivElement | null>(null)
+  const hasTriggeredRef = useRef(false)
 
-  // Trigger a stronger wave animation when the dots grid enters the viewport
+  // Trigger initial glow when dots enter viewport
   useEffect(() => {
     if (!dotsGridRef.current) return
 
@@ -18,21 +19,14 @@ const ProcessV2 = () => {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          setWaveActive(true)
+        if (entry.isIntersecting && !hasTriggeredRef.current) {
+          hasTriggeredRef.current = true
+          setInitialGlow(true)
 
-          // Clear any existing timeout
-          if (timeoutId) {
-            clearTimeout(timeoutId)
-          }
-
-          // Turn off wave after all columns complete their animation
-          // Last column (column 9) starts at: 9 * 80ms = 720ms
-          // Animation duration: 900ms
-          // Total time needed: ~2000ms
+          // Turn off glow after 2.5 seconds
           timeoutId = setTimeout(() => {
-            setWaveActive(false)
-          }, 2000)
+            setInitialGlow(false)
+          }, 2500)
         }
       },
       {
@@ -166,30 +160,28 @@ const ProcessV2 = () => {
               {Array.from({ length: 50 }).map((_, idx) => {
                 const isFirstGroup = idx < 35
                 const isHoveredGroup = hoverGroup === (isFirstGroup ? 'first' : 'last')
-                // Calculate column number (0-9) for column-by-column wave effect
-                const columnNumber = idx % 10
+                
+                // Determine if dot should show colored glow
+                const showBurgundyGlow = (initialGlow && isFirstGroup) || (hoverGroup === 'first' && isFirstGroup)
+                const showGoldGlow = (initialGlow && !isFirstGroup) || (hoverGroup === 'last' && !isFirstGroup)
+                
+                // Use slow transition only when initial glow is fading, fast for hover
+                const transitionSpeed = initialGlow || hoverGroup ? 'duration-300' : 'duration-[2500ms]'
 
                 return (
                   <span
                     key={idx}
                     onMouseEnter={() => setHoverGroup(isFirstGroup ? 'first' : 'last')}
                     className={[
-                      'rounded-full transition-all duration-200',
-                      waveActive
-                        ? 'animate-dots-wave'
-                        : isHoveredGroup
-                          ? 'animate-none'
-                          : 'animate-dots-breathe',
-                      hoverGroup === 'first' && isFirstGroup
-                        ? 'h-3.5 w-3.5 md:h-3.5 md:w-3.5 bg-[#f2bb22] shadow-[0_0_12px_4px_rgba(242,187,34,0.35)]'
-                        : hoverGroup === 'last' && !isFirstGroup
-                          ? 'h-3.5 w-3.5 md:h-3.5 md:w-3.5 bg-[#8a1d38] shadow-[0_0_12px_4px_rgba(128,0,32,0.35)]'
+                      'rounded-full transition-all ease-in-out',
+                      transitionSpeed,
+                      isHoveredGroup ? 'animate-none' : 'animate-dots-breathe',
+                      showBurgundyGlow
+                        ? 'h-3.5 w-3.5 md:h-3.5 md:w-3.5 bg-[#8a1d38] shadow-[0_0_12px_4px_rgba(128,0,32,0.35)]'
+                        : showGoldGlow
+                          ? 'h-3.5 w-3.5 md:h-3.5 md:w-3.5 bg-[#f2bb22] shadow-[0_0_12px_4px_rgba(242,187,34,0.35)]'
                           : 'h-3 w-3 bg-black'
                     ].join(' ')}
-                    style={{
-                      animationDelay: `${columnNumber * 80}ms`,
-                      animationPlayState: isHoveredGroup && !waveActive ? 'paused' : 'running'
-                    }}
                   />
                 )
               })}

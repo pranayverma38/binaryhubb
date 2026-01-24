@@ -43,9 +43,9 @@ const AboutV4 = () => {
           <RevealWrapper className="flex flex-col gap-x-16 gap-y-16 lg:flex-row lg:items-stretch">
             <div className="flex items-center justify-center max-lg:w-full lg:h-full">
               <img 
-                src="/images/Asset_svg.svg" 
+                src="/images/logo-icon.png" 
                 alt="About me" 
-                className="h-full w-full object-contain max-lg:w-[45px] max-lg:h-auto lg:h-full svg-brown-color"
+                className="hidden h-full max-w-[150px] object-contain md:block max-lg:w-[45px] max-lg:h-auto lg:h-full svg-brown-color"
               />
             </div>
             <div className="flex flex-col">
