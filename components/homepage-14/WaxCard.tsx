@@ -1,6 +1,7 @@
 'use client'
 
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -11,6 +12,7 @@ if (typeof window !== 'undefined') {
 }
 
 const WaxCard = () => {
+  const router = useRouter()
   const sectionRef = useRef<HTMLElement>(null)
   const imageContainerRef = useRef<HTMLDivElement>(null)
   const buttonRef = useRef<HTMLButtonElement>(null)
@@ -103,6 +105,7 @@ const WaxCard = () => {
       <div className="absolute inset-0 flex flex-col items-center justify-center z-20 translate-y-[5%] lg:translate-y-[10%]">
         <button
           ref={buttonRef}
+          onClick={() => router.push('/privateaccess')}
           onMouseMove={handleMouseMove}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
