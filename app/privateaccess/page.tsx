@@ -5,7 +5,7 @@ import LayoutOne from '@/components/shared/LayoutOne'
 import PageHero from '@/components/shared/PageHero'
 
 export const metadata = {
-  title: 'Contact',
+  title: 'Private Access',
 }
 
 const ContactPage = () => {
