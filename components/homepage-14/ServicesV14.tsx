@@ -1,7 +1,6 @@
 'use client'
 
 import Image from 'next/image'
-import RevealWrapper from '../animation/RevealWrapper'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -86,31 +85,55 @@ const ServicesV14 = () => {
     () => {
       if (!sectionRef.current) return
 
-      // Create parallax effect for each card
+      // Create stacked card reveal effect - each card reveals out and down
       cardRefs.current.forEach((cardRef, index) => {
         if (!cardRef) return
 
+        // Skip first card
+        if (index > 0) {
+          // Each card starts scaled down and positioned up (tucked under previous card)
+          // Then animates to full scale and position as it enters viewport
+          gsap.fromTo(
+            cardRef,
+            {
+              scale: 0.92,
+              y: -80,
+            },
+            {
+              scale: 1,
+              y: 0,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: cardRef,
+                start: 'top bottom',
+                end: 'top center',
+                scrub: 1.5,
+                invalidateOnRefresh: true,
+              },
+            },
+          )
+        }
+
+        // Parallax effect for images
         const imageContainer = cardRef.querySelector('.parallax-image-container') as HTMLElement
         if (!imageContainer) return
 
-        // Different parallax speeds for each card (varied speeds for visual interest)
-        // Positive values move down on scroll, negative values move up on scroll
         const parallaxSpeeds = [60, -50, 80, -60]
         const parallaxDistance = parallaxSpeeds[index % parallaxSpeeds.length]
 
         gsap.fromTo(
           imageContainer,
           {
-            y: -parallaxDistance / 2, // Start position (half distance up)
+            y: -parallaxDistance / 2,
           },
           {
-            y: parallaxDistance / 2, // End position (half distance down)
+            y: parallaxDistance / 2,
             ease: 'none',
             scrollTrigger: {
               trigger: cardRef,
               start: 'top bottom',
               end: 'bottom top',
-              scrub: 1, // Smooth scrubbing (1 = 1 second lag for smoothness)
+              scrub: 1,
               invalidateOnRefresh: true,
             },
           },
@@ -126,20 +149,28 @@ const ServicesV14 = () => {
       className="relative py-14 md:py-16 lg:py-[88px] xl:py-[100px]"
       style={{ backgroundColor: 'rgb(237, 233, 228)' }}>
       <div className="container">
-      <TextAppearAnimation>
-            <h3 className="text-appear mb-8 text-center instrument-serif-regular text-[48px] md:text-[57px] lg:mb-[52px] lg:text-[64px] xl:text-[74px] xl:leading-[1.1]">
-              The <span className="italic">Artifacts</span>
-            </h3>
-          </TextAppearAnimation>
+        <TextAppearAnimation>
+          <h3 className="text-appear mb-8 text-center instrument-serif-regular text-[48px] md:text-[57px] lg:mb-[52px] lg:text-[64px] xl:text-[74px] xl:leading-[1.1]">
+            The <span className="italic">Artifacts</span>
+          </h3>
+        </TextAppearAnimation>
+        
         {services.map((service, index) => (
           <div
             key={`${service.id}-${index}`}
             ref={(el) => {
               cardRefs.current[index] = el
+            }}
+            style={{
+              transformOrigin: 'center top',
+              backgroundColor: 'rgb(237, 233, 228)',
+              position: 'relative',
+              zIndex: services.length - index,
+              paddingBottom: index < services.length - 1 ? '0px' : '0',
             }}>
             <div className="grid grid-cols-1 gap-8 md:grid-cols-12 md:gap-8 lg:gap-12">
               {/* Left Column: Number and Title */}
-              <RevealWrapper className="md:col-span-2" delay={index * 0.1}>
+              <div className="md:col-span-2">
                 <div className="flex flex-col">
                   <span className="mb-2 text-sm font-light tracking-wider text-[#403e39] md:mb-4">
                     {service.number}
@@ -148,17 +179,17 @@ const ServicesV14 = () => {
                     {service.title}
                   </h3>
                 </div>
-              </RevealWrapper>
+              </div>
 
               {/* Middle Column: Description */}
-              <RevealWrapper className="md:col-span-6" delay={index * 0.1 + 0.1}>
+              <div className="md:col-span-6">
                 <p className="text-left text-[#403e39] text-base md:text-lg leading-relaxed max-w-2xl">
                   {service.description}
                 </p>
-              </RevealWrapper>
+              </div>
 
               {/* Right Column: Image */}
-              <RevealWrapper className="md:col-span-4" delay={index * 0.1 + 0.1}>
+              <div className="md:col-span-4">
                 <div className="relative h-[300px] w-full overflow-hidden md:h-[400px] lg:h-[220px] xl:h-[230px]">
                   <div className="parallax-image-container relative h-[120%] w-full -top-[10%]">
                     <Image
@@ -170,12 +201,12 @@ const ServicesV14 = () => {
                     />
                   </div>
                 </div>
-              </RevealWrapper>
+              </div>
             </div>
 
-            {/* Separator Line */}
+            {/* Separator Line inside card */}
             {index < services.length - 1 && (
-              <div className="my-12 border-t border-[#403e39]/20 md:my-16 lg:my-20" />
+              <div className="my-6 border-t border-[#403e39]/20 md:my-6 lg:my-6" />
             )}
           </div>
         ))}
