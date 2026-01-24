@@ -349,9 +349,9 @@ export default function Navbar() {
         <nav
           className={`fixed z-[1000] w-full px-5 pt-1 transition duration-300 ease-linear will-change-transform sm:px-8 sm:pt-5 ${isVisible || !isMobile ? 'translate-y-0' : '-translate-y-full'}`}>
           <div className="flex justify-between">
-            <Link href="/" className="relative z-10 mt-2 sm:mt-4 md:mt-6">
+            <Link href="/" className="relative z-10 -ml-2 mt-0 sm:-ml-3 sm:mt-0 md:-ml-4">
               <Image
-                className="inline-block max-h-[50px] w-auto sm:max-h-[60px] md:max-h-[80px] lg:max-h-[100px] xl:max-h-[120px] dark:hidden transition-all duration-300"
+                className="inline-block max-h-[50px] w-auto sm:max-h-[40px] md:max-h-[50px] lg:max-h-[60px] xl:max-h-[70px] dark:hidden transition-all duration-300"
                 src={logo}
                 alt="logo"
                 width={136}
@@ -362,7 +362,7 @@ export default function Navbar() {
                 }}
               />
               <Image
-                className="hidden max-h-[50px] w-auto sm:max-h-[60px] md:max-h-[80px] lg:max-h-[100px] xl:max-h-[120px] dark:inline-block transition-all duration-300"
+                className="hidden max-h-[50px] w-auto sm:max-h-[40px] md:max-h-[50px] lg:max-h-[60px] xl:max-h-[70px] dark:inline-block transition-all duration-300"
                 src={logoDark}
                 alt="logo"
                 width={136}
