@@ -8,7 +8,7 @@ export const metadata = {
 
 const NotFound = () => {
   return (
-    <main className="relative z-10 mb-0 bg-backgroundBody dark:bg-dark">
+    <main className="relative z-10 mb-0" style={{ backgroundColor: 'rgb(237, 233, 228)' }}>
       <section className="relative h-screen overflow-hidden pt-36 md:pt-12 lg:pt-0 2xl:pt-12">
         <HeroGradientAnimation />
         <div className="container">

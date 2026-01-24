@@ -93,7 +93,7 @@ const HeroV14 = () => {
             Infinite Silence
           </h1>
         </RevealWrapper>
-        <h1 className="instrument-serif-regular text-[rgb(237,233,228)] text-[20vw] xl:text-[20vw] leading-[0.8] text-center whitespace-nowrap">
+        <h1 className="instrument-serif-regular text-[rgb(237,233,228)] text-[18vw] xl:text-[18vw] leading-[0.8] text-center whitespace-nowrap opacity-55">
           BINARYHUBB
         </h1>
       </RevealWrapper>

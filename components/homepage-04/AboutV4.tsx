@@ -52,12 +52,15 @@ const AboutV4 = () => {
               <p className={`${libreBaskerville.className} text-lg leading-[1.6] tracking-[0.36px]`}>
                 The world is too loud. Infinite connection has replaced the warmth of a gaze, leaving us with everything
                 but the one thing we cannot manufacture: The Uninterrupted Moment. Binaryhubb is a boundary, not a
-                product. It is a sanctuary from a city that never silences.
+                product. It is a sanctuary from a country that never silences.
               </p>
               <p className={`${libreBaskerville.className} mb-4 mt-5 text-lg leading-[1.6] tracking-[0.36px]`}>
                 Our philosophy is the Ritual of 0 and 1: 0 is the silence of the world; 1 is the presence of the soul.
                 We measure time by depth, not minutes. Sixty minutes of absolute intention is worth a lifetime of
-                distracted proximity Disconnect to Begin.
+                distracted proximity.
+              </p>
+              <p className={`${libreBaskerville.className} mb-4 text-lg leading-[1.6] tracking-[0.36px]`}>
+                Disconnect to Begin.
               </p>
               {/* <ul>
                 <li>
