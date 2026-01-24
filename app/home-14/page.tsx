@@ -50,7 +50,7 @@ const homepage14 = () => {
       <ProcessV2 />
       <WaxCard />
       
-      {/* <ImmersiveImage imageSrc="/images/44.jpg" imageAlt="Immersive experience" /> */}
+      {/* <ImmersiveImage imageSrc="/images/44.jpg" imageAlt="Immersive experience" /> */} 
 
 
     </LayoutOne>
