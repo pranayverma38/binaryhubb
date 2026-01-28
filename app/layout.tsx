@@ -1,4 +1,4 @@
-import CursorPointer from '@/components/animation/CursorPointer'
+// import CursorPointer from '@/components/animation/CursorPointer'
 import SmoothScrollProvider from '@/components/shared/SmoothScroll'
 // import ThemeSwitcher from '@/components/theme/ThemeSwitcher'
 import { satoshi } from '@/utils/fonts'
@@ -33,7 +33,7 @@ export default function RootLayout({
           <SmoothScrollProvider>
             <ThemeModeProvider>
               {/* <ThemeSwitcher /> */}
-              <CursorPointer />
+              {/* <CursorPointer /> */}
               {children}
             </ThemeModeProvider>
           </SmoothScrollProvider>
